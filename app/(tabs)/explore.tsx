@@ -1,5 +1,6 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useTransportContext } from '@/contexts/TransportContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -11,11 +12,10 @@ import {
 	TextInput,
 	TouchableOpacity
 } from 'react-native';
-import { SerialTransport } from 'react-native-serial-transport';
 
 export default function DataTransferScreen() {
 	const colorScheme = useColorScheme();
-	const [transport] = useState(() => new SerialTransport());
+	const { transport } = useTransportContext();
 	const [inputText, setInputText] = useState('');
 	const [receivedData, setReceivedData] = useState<string[]>([]);
 	const [isReading, setIsReading] = useState(false);

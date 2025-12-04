@@ -1,5 +1,6 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useTransportContext } from '@/contexts/TransportContext';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
@@ -10,7 +11,6 @@ import {
 	StyleSheet,
 	TouchableOpacity
 } from 'react-native';
-import { SerialTransport } from 'react-native-serial-transport';
 
 interface USBDevice {
 	deviceName: string;
@@ -29,7 +29,7 @@ export default function HomeScreen() {
 	const [loading, setLoading] = useState(false);
 	const [connected, setConnected] = useState(false);
 	const [connectedDevice, setConnectedDevice] = useState<string>('');
-	const [transport] = useState(() => new SerialTransport());
+	const { transport } = useTransportContext();
 	const [logs, setLogs] = useState<string[]>([]);
 
 	const addLog = (message: string) => {
@@ -47,6 +47,7 @@ export default function HomeScreen() {
 		addLog('Scanning for USB devices...');
 		try {
 			const deviceList = await transport.listDevices();
+
 			setDevices(deviceList);
 			addLog(`Found ${deviceList.length} device(s)`);
 		} catch (error) {
